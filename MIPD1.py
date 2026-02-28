@@ -105,7 +105,7 @@ def gajiena_parbaude(gajiena_tips, generetas_virsotnes, pasreizeja_virsotne):
     # Pārbaude vai tāda virsotne jau eksistē
     parbaude = False
     i = 0
-    while (not parbaude) and (i <= len(sp.virsotnu_kopa)):
+    while (not parbaude) and (i <= len(sp.virsotnu_kopa)-1):
         v = sp.virsotnu_kopa[i]
         if (v.skaitlis == jauna_virsotne.skaitlis) and (v.p1 == jauna_virsotne.p1) and (v.p2 == jauna_virsotne.p2) and (v.banka == jauna_virsotne.banka) and (v.limenis == jauna_virsotne.limenis) and (v.gajiens == jauna_virsotne.gajiens):
             parbaude = True
