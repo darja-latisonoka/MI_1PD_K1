@@ -5,14 +5,14 @@ import sv_ttk
 
 from GameState import *
 
-from pages.StartMenuPage import *
+from pages.MainMenuPage import *
 from pages.ChooseNumberPage import *
 from pages.GamePage import *
 from pages.InfoPage import *
 
 WINDOW_WIDTH = 960
 WINDOW_HEIGHT = 540
-PAGES = (StartMenuPage, ChooseNumberPage)
+PAGES = (MainMenuPage, ChooseNumberPage, GamePage, InfoPage)
 
 class App(tk.Tk):
 	def __init__(self):
@@ -47,14 +47,20 @@ class App(tk.Tk):
 		container.grid_rowconfigure(0, weight=1)
 		container.grid_columnconfigure(0, weight=1)
 
-		self.show_page("StartMenuPage")
+		self.show_page("MainMenuPage")
 	
+	# kad nospiež play sākas jauns raunds
 	def new_round(self):
 		self.game.new_round()
 		self.show_page("ChooseNumberPage")
 
+	# parāda un updeito lapu
 	def show_page(self, page_name):
-		self.pages[page_name].tkraise()
+		page = self.pages[page_name]
+		page.tkraise()
+
+		if hasattr(page, "refresh") and callable(page.refresh):
+			page.refresh(self) # ar self iedod app
 
 if __name__ == "__main__":
 	app = App()
