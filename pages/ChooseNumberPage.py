@@ -1,26 +1,53 @@
 import tkinter as tk
 from tkinter import ttk
 
+BUTTON_COUNT = 5
+
 class ChooseNumberPage(tk.Frame):
 	def __init__(self, parent, app):
 		super().__init__(parent)
 
-		textLabel = ttk.Label(self, text="THIS IS WHERE THE NUMBER CHOICE HAPPENS")
-		textLabel.place(relx=0.5, rely=0.5, anchor="center")
+		textLabel = ttk.Label(self, text="CHOOSE A NUMBER TO START WITH")
+		textLabel.place(relx=0.5, rely=0.1, anchor="center")
+
+		self.buttonFrame = tk.Frame(self, bd=5, relief="raised")
+		self.buttonFrame.place(relx=0.5, rely=0.3, anchor="center")
+
+		self.numberBtnTextList = [None] * BUTTON_COUNT
+		for i in range(BUTTON_COUNT):
+			self.numberBtnTextList[i] = tk.IntVar()
+			button = ttk.Button(
+				self.buttonFrame,
+				textvariable=self.numberBtnTextList[i],
+				command=lambda i=i: self.select_number(app, app.game.random_numbers_list[i])
+			)
+			button.pack(side="left", padx=20, pady=20)
 
 		self.numbersLabelText = tk.StringVar()
-		self.numbersLabelText.set(f"current numbers: {app.game.random_numbers_choice}")
 		numbersLabel = ttk.Label(self, textvariable=self.numbersLabelText)
-		numbersLabel.place(relx=0.5, rely=0.6, anchor="center")
+		numbersLabel.place(relx=0.5, rely=0.4, anchor="center")
 
-		chooseBtn = ttk.Button(self, text="CHOOSE NUMBER", command=lambda: app.show_page("GamePage"))
-		chooseBtn.place(relx=0.5, rely=0.7, anchor="center")
-
-		buttonFrame = ttk.Frame()
-		buttonFrame.place(relx=0.5, rely=0.8, anchor="center")
+		chooseBtn = ttk.Button(self, text="CHOOSE NUMBER", command=lambda: self.choose_number(app))
+		chooseBtn.place(relx=0.5, rely=0.5, anchor="center")
 
 		backBtn = ttk.Button(self, text="BACK", command=lambda: app.show_page("MainMenuPage"))
 		backBtn.place(relx=0.5, rely=0.9, anchor="center")
 	
 	def refresh(self, app):
-		self.numbersLabelText.set(f"current numbers: {app.game.random_numbers_choice}")
+		# atjaunot skaitļu pogas
+		for i in range(BUTTON_COUNT):
+			self.numberBtnTextList[i].set(app.game.random_numbers_list[i])
+
+		# atjaunot šobrīdējā izvēlētā skaitļa label
+		if app.game.selected_number == 0:
+			self.numbersLabelText.set(f"Currently selected number: NONE")
+		else:
+			self.numbersLabelText.set(f"Currently selected number: {app.game.selected_number}")
+
+	def select_number(self, app, number):
+		app.game.select_number(number)
+		self.refresh(app)
+	
+	def choose_number(self, app):
+		app.game.choose_number(app.game.selected_number)
+		app.show_page("GamePage")

@@ -1,6 +1,5 @@
 # MAIN ENTRY POINT
 import tkinter as tk
-from tkinter import ttk
 import sv_ttk
 
 from GameState import *
@@ -51,7 +50,7 @@ class App(tk.Tk):
 	
 	# kad nospiež play sākas jauns raunds
 	def new_round(self):
-		self.game.new_round()
+		self.game.new_round()	# updeito game state
 		self.show_page("ChooseNumberPage")
 
 	# parāda un updeito lapu
@@ -59,6 +58,7 @@ class App(tk.Tk):
 		page = self.pages[page_name]
 		page.tkraise()
 
+		# ja ir refresh funkcija, tad refresho
 		if hasattr(page, "refresh") and callable(page.refresh):
 			page.refresh(self) # ar self iedod app
 
