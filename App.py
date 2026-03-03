@@ -49,8 +49,8 @@ class App(tk.Tk):
 		self.show_page("MainMenuPage")
 	
 	# kad nospiež play sākas jauns raunds
-	def new_round(self):
-		self.game.new_round()	# updeito game state
+	def start_new_round(self):
+		self.game.start_new_round()	# updeito game state
 		self.show_page("ChooseNumberPage")
 
 	# parāda un updeito lapu
