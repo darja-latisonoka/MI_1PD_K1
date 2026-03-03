@@ -26,13 +26,7 @@ class GameState:
         self.current_number = number
     
     def switch_algorithm(self):
-        if self.algorithm == "alfa-beta":
-            self.algorithm = "minmax"
-        else:
-            self.algorithm = "alfa-beta"
+        self.algorithm = "minmax" if self.algorithm == "alfa-beta" else "alfa-beta"
     
     def switch_turn(self):
-        if self.turn == "player":
-            self.turn = "ai"
-        else:
-            self.turn = "player"
+        self.turn = "ai" if self.turn == "player" else "player"

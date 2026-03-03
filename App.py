@@ -1,5 +1,6 @@
 # MAIN ENTRY POINT
 import tkinter as tk
+from pathlib import Path
 import sv_ttk
 
 from GameState import *
@@ -20,7 +21,14 @@ class App(tk.Tk):
 
 		self.game = GameState()
 
+		# title and icon
 		self.title("Divider Ultra")
+		assets_dir = Path(__file__).resolve().parent / "assets" / "images" / "icons"
+		self.iconphoto(
+			False,
+			tk.PhotoImage(file=str(assets_dir / "icon_16.png")),
+			tk.PhotoImage(file=str(assets_dir / "icon_32.png"))
+		)
 
 		# atver aplikāciju ekrāna vidū
 		w = WINDOW_WIDTH
