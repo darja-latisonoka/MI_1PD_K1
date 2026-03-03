@@ -1,4 +1,5 @@
 import tkinter as tk
+import tkinter.messagebox as msgbox
 from tkinter import ttk
 
 BUTTON_COUNT = 5
@@ -49,5 +50,10 @@ class ChooseNumberPage(tk.Frame):
 		self.refresh(app)
 	
 	def choose_number(self, app):
-		app.game.choose_number(app.game.selected_number)
+		n = app.game.selected_number
+		if n == 0:
+			msgbox.showwarning("No number selected", "You must select a number before continuing!")
+			return
+		else:
+			app.game.choose_number(app.game.selected_number)
 		app.show_page("GamePage")
