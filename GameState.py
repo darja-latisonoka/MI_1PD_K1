@@ -12,7 +12,7 @@ class GameState:
     algorithm: str = "alfa-beta" # vai nu "alfa-beta", vai "minmax"
     turn: str = "player" # "player" vai "ai"
 
-    def new_round(self):
+    def start_new_round(self):
         self.random_numbers_list = [1000001, 1000002, 1000003, 1000004, 1000005] # vajadzīga funkcija
         self.selected_number = 0
         self.current_number = 0
@@ -25,13 +25,13 @@ class GameState:
     def choose_number(self, number):
         self.current_number = number
     
-    def change_algorithm(self):
+    def switch_algorithm(self):
         if self.algorithm == "alfa-beta":
             self.algorithm = "minmax"
         else:
             self.algorithm = "alfa-beta"
     
-    def change_starting_turn(self):
+    def switch_turn(self):
         if self.turn == "player":
             self.turn = "ai"
         else:
