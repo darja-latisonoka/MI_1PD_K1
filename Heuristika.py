@@ -17,25 +17,20 @@ def var_sasniegt_2(skaitlis):
 
 # Heiristiskā novērtējuma funkcija
 def heuristika(virsotne):
-    
-    # Ja spēle ir beigusies, atgriež gala novērtējumu
-    if ir_beigas(virsotne):
-        if virsotne.p2 > virsotne.p1:
-            return 1000 # uzvar dators
-        elif virsotne.p2 < virsotne.p1:
-            return -1000 # uzvar cilvēks
-        return 0 # neizšķirts
 
     # Pamata novērtējums:
-    # punktu starpība starp datoru un cilvēku + daļa no bankas vērtības
-    vertiba = (virsotne.p2 - virsotne.p1) + 0.5 * virsotne.banka
+    vertiba = virsotne.p2 - virsotne.p1
 
-    # Ja tagad ir datora gājiens un dators var uzreiz iegūt 2, tad pozīcija kļūst daudz izdevīgāka
+    # Ja dators var uzreiz iegūt 2, tad var arī saņemt banku
     if virsotne.gajiens == 2 and var_sasniegt_2(virsotne.skaitlis):
-        vertiba += 20 + virsotne.banka
+        vertiba += virsotne.banka
 
-    # Ja tagad ir cilvēka gājiens un cilvēks var uzreiz iegūt 2, tad pozīcija datoram kļūst bīstamāka
-    if virsotne.gajiens == 1 and var_sasniegt_2(virsotne.skaitlis):
-        vertiba -= 20 + virsotne.banka
+    # Ja cilvēks var uzreiz iegūt 2, tas ir bīstami
+    elif virsotne.gajiens == 1 and var_sasniegt_2(virsotne.skaitlis):
+        vertiba -= virsotne.banka
+
+    # Banka pati par sevi ir neliels bonuss, bet ne pārāk liels
+    else:
+        vertiba += 0.1 * virsotne.banka
 
     return vertiba

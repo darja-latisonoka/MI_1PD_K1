@@ -1,22 +1,21 @@
-
 import random
 from models.Virsotne import Virsotne
 from models.Speles_koks import Speles_koks
 
-skaitli = []
 
-while len(skaitli) < 5:
-    x = random.randint(1000000, 5000000)
-    if x % 216 == 0:
-        skaitli.append(x)
+MAX_LIMENIS = 5
 
-def gajiena_parbaude(gajiena_tips, generetas_virsotnes, pasreizeja_virsotne): # gajiena_tips: '2' vai '3' (dalītājs)
+def gajiena_parbaude(gajiena_tips, generetas_virsotnes, pasreizeja_virsotne, sp): # gajiena_tips: '2' vai '3' (dalītājs)
     # ja 2 vai 3 spēle beidzas
-    if pasreizeja_virsotne[1] == 2 or pasreizeja_virsotne[1] == 3:
+    if pasreizeja_virsotne.skaitlis == 2 or pasreizeja_virsotne.skaitlis == 3:
+        return
+    
+    # ja sasniegts maksimālais dziļums, tālāk koku neveido
+    if pasreizeja_virsotne.limenis >= MAX_LIMENIS:
         return
 
     dalitajs = int(gajiena_tips)
-    skaitlis = pasreizeja_virsotne[1]
+    skaitlis = pasreizeja_virsotne.skaitlis
 
     # Pārbaude: vai var dalīt bez atlikuma
     if skaitlis % dalitajs != 0:
@@ -30,12 +29,12 @@ def gajiena_parbaude(gajiena_tips, generetas_virsotnes, pasreizeja_virsotne): # 
     jaunais_skaitlis = skaitlis // dalitajs
 
     # Pašreizējie punkti un banka
-    p1_new = pasreizeja_virsotne[2]
-    p2_new = pasreizeja_virsotne[3]
-    banka_new = pasreizeja_virsotne[4]
+    p1_new = pasreizeja_virsotne.p1
+    p2_new = pasreizeja_virsotne.p2
+    banka_new = pasreizeja_virsotne.banka
 
     # Kurš izdara gājienu
-    gajiens = pasreizeja_virsotne[6]
+    gajiens = pasreizeja_virsotne.gajiens
 
     # Punkti par pāra/nepāra rezultātu
     if (jaunais_skaitlis % 2) == 0:
@@ -60,7 +59,7 @@ def gajiena_parbaude(gajiena_tips, generetas_virsotnes, pasreizeja_virsotne): # 
             p2_new = p2_new + banka_new
         banka_new = 0
 
-    limenis_new = pasreizeja_virsotne[5] + 1
+    limenis_new = pasreizeja_virsotne.limenis + 1
 
     # Nākamais gājiens (mainās spēlētājs)
     if gajiens == 1:
@@ -68,57 +67,62 @@ def gajiena_parbaude(gajiena_tips, generetas_virsotnes, pasreizeja_virsotne): # 
     else:
         gajiens_new = 1
 
-    jauna_virsotne = Virsotne(id_new, jaunais_skaitlis, p1_new, p2_new, banka_new, limenis_new, gajiens_new)
+    jauna_virsotne = Virsotne(
+        id_new,
+        jaunais_skaitlis,
+        p1_new,
+        p2_new,
+        banka_new,
+        limenis_new,
+        gajiens_new
+    )
 
     # Pārbaude vai tāda virsotne jau eksistē
     parbaude = False
     i = 0
     while (not parbaude) and (i <= len(sp.virsotnu_kopa)-1):
         v = sp.virsotnu_kopa[i]
-        if (v.skaitlis == jauna_virsotne.skaitlis) and (v.p1 == jauna_virsotne.p1) and (v.p2 == jauna_virsotne.p2) and (v.banka == jauna_virsotne.banka) and (v.limenis == jauna_virsotne.limenis) and (v.gajiens == jauna_virsotne.gajiens):
+        if (
+            v.skaitlis == jauna_virsotne.skaitlis and
+            v.p1 == jauna_virsotne.p1 and
+            v.p2 == jauna_virsotne.p2 and
+            v.banka == jauna_virsotne.banka and
+            v.limenis == jauna_virsotne.limenis and
+            v.gajiens == jauna_virsotne.gajiens
+        ):
             parbaude = True
         else:
             i += 1
 
     if not parbaude:
         sp.pievienot_virsotni(jauna_virsotne)
-        generetas_virsotnes.append([id_new, jaunais_skaitlis, p1_new, p2_new, banka_new, limenis_new, gajiens_new])
-        sp.pievienot_loku(pasreizeja_virsotne[0], id_new)
+        generetas_virsotnes.append(jauna_virsotne)
+        sp.pievienot_loku(pasreizeja_virsotne.id, id_new)
     else:
         j -= 1
-        sp.pievienot_loku(pasreizeja_virsotne[0], sp.virsotnu_kopa[i].id)
-     
-# izveido tukšu spēles koku
-sp = Speles_koks()
+        sp.pievienot_loku(pasreizeja_virsotne.id, sp.virsotnu_kopa[i].id)
 
-# saraksts ar virsotnēm
-generetas_virsotnes = []
 
-# sākuma virsotne, punkti 0, banka 0, līmenis 1
-sak_pirmais = 2   # 1 - cilvēks, 2 - dators
-sp.pievienot_virsotni(Virsotne('A1', skaitli[0], 0, 0, 0, 1, sak_pirmais))
-generetas_virsotnes.append(['A1', skaitli[0], 0, 0, 0, 1, sak_pirmais])
+def uzgeneret_koku_no_virsotnes(sp, sakuma_virsotne):
 
-# virsotņu skaitītājs
-j = 2
+    # saraksts ar virsotnēm
+    generetas_virsotnes = []
 
-# ģenerē koku
-while len(generetas_virsotnes) > 0:
-    pasreizeja_virsotne = generetas_virsotnes[0]
+    sp.pievienot_virsotni(sakuma_virsotne)
+    generetas_virsotnes.append(sakuma_virsotne)
 
-    # gājiens: dalīt ar 2
-    gajiena_parbaude('2', generetas_virsotnes, pasreizeja_virsotne)
+    global j
+    j = 2
 
-    # gājiens: dalīt ar 3
-    gajiena_parbaude('3', generetas_virsotnes, pasreizeja_virsotne)
+    # ģenerē koku
+    while len(generetas_virsotnes) > 0:
 
-    # izņem apstrādāto virsotni
-    generetas_virsotnes.pop(0)
+        pasreizeja_virsotne = generetas_virsotnes[0]
 
-# izvada virsotnes
-for x in sp.virsotnu_kopa:
-    print(x.id, x.skaitlis, x.p1, x.p2, x.banka, x.limenis, x.gajiens)
+        # gājiens: dalīt ar 2
+        gajiena_parbaude('2', generetas_virsotnes, pasreizeja_virsotne, sp)
 
-# izvada lokus
-for x, y in sp.loku_kopa.items():
-    print(x, y)
+        # gājiens: dalīt ar 3
+        gajiena_parbaude('3', generetas_virsotnes, pasreizeja_virsotne, sp)
+
+        generetas_virsotnes.pop(0)
