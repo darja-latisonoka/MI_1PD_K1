@@ -1,6 +1,5 @@
-﻿from Minimaksa import iegut_bernus
-from Heuristika import heuristika
-from Heuristika import ir_beigas
+﻿from logic.minimax import iegut_bernus
+from logic.heuristic import heuristika, ir_beigas
 
 
 def alphabeta(virsotne, sp, virsotnes_dict, alpha, beta):
