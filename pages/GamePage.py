@@ -1,33 +1,113 @@
 import tkinter as tk
+import tkinter.messagebox as msgbox
 from tkinter import ttk
 
 class GamePage(tk.Frame):
 	def __init__(self, parent, app):
 		super().__init__(parent)
 
-		pointsFrame = tk.Frame(self, bd=3, relief="ridge")
-		pointsFrame.place(relx=0.5, rely=0.1, anchor="center")
+		# mainīgie, kam jāapdeitojas
 		self.playerScore = tk.StringVar()
-		playerScoreLabel = ttk.Label(
-			pointsFrame,
-			textvariable=self.playerScore,
-			font=("Arial", 15)
-		)
-		playerScoreLabel.pack(padx=10, pady=10)
+		self.bankScore = tk.StringVar()
+		self.aiScore = tk.StringVar()
 
+		# punktu rāmis ar virsrakstu
+		pointsFrame = tk.Frame(self, bd=0, highlightthickness=1, highlightbackground="gray")
+		pointsFrame.place(relx=0.5, rely=0.1, anchor="center")
+		pointsLabel = ttk.Label(pointsFrame, text="Punkti", font=("Verdana", 15, "bold"))
+		pointsLabel.grid(row=0, column=2, pady=5)
+
+		# punktu labels ar atdalītājiem
+		self.createPointsLabel(pointsFrame, self.playerScore, ("Arial", 12), 1, 0, 40, 10)
+		tk.Frame(pointsFrame, bg="white", width=1).grid(row=1, column=1, sticky="ns", pady=5)
+		self.createPointsLabel(pointsFrame, self.bankScore, ("Arial", 12), 1, 2, 40, 10)
+		tk.Frame(pointsFrame, bg="white", width=1).grid(row=1, column=3, sticky="ns", pady=5)
+		self.createPointsLabel(pointsFrame, self.aiScore, ("Arial", 12), 1, 4, 40, 10)
+
+		# šobrīdēji dalāmā skaitļa attēlojums
 		currentNumberFrame = tk.Frame(self, bd=5, relief="raised")
-		currentNumberFrame.place(relx=0.5, rely=0.5, anchor="center")
-		self.currentNumberText = tk.IntVar()
+		currentNumberFrame.place(relx=0.5, rely=0.3, anchor="center")
+		self.currentNumber = tk.IntVar()
 		currentNumberLabel = ttk.Label(
 			currentNumberFrame,
-			textvariable=self.currentNumberText,
+			textvariable=self.currentNumber,
 			font=("Arial", 40)
 		)
 		currentNumberLabel.pack(padx=50, pady=20)
 
+		# rāmis priekš dalīšanas pogām
+		buttonFrame = tk.Frame(self, bd=0)
+		buttonFrame.place(relx=0.5, rely=0.5, anchor="center")
+
+		# pogas ar kurām dala
+		self.divideBy2Result = tk.StringVar()
+		divideBy2button = self.createFormattedButton(
+			buttonFrame,
+			"/ 2",
+			self.divideBy2Result,
+			command=lambda: self.divideByNumber(app, 2)
+		)
+		divideBy2button.grid(row=0, column=0, padx=40)
+
+		self.divideBy3Result = tk.StringVar()
+		divideBy3button = self.createFormattedButton(
+			buttonFrame,
+			"/ 3",
+			self.divideBy3Result,
+			command=lambda: self.divideByNumber(app, 3)
+		)
+		divideBy3button.grid(row=0, column=1, padx=40)
+
+		# iziešanas poga
 		backBtn = ttk.Button(self, text="BACK (to main menu)", command=lambda: app.show_page("MainMenuPage"))
 		backBtn.place(relx=0.5, rely=0.9, anchor="center")
 	
+	
 	def refresh(self, app):
-		self.currentNumberText.set(app.game.current_number)
-		self.playerScore.set("Spēlētāja punkti: " + str(app.game.player_score))
+		# updeito visus mainīgos, paņemot info no gamestate
+		self.currentNumber.set(app.game.current_number)
+
+		self.playerScore.set("Spēlētājs: " + str(app.game.player_score))
+		self.bankScore.set("Banka: " + str(app.game.bank_score))
+		self.aiScore.set("Dators: " + str(app.game.ai_score))
+
+		self.divideBy2Result.set(self.createResultLabel(app, 2))
+		self.divideBy3Result.set(self.createResultLabel(app, 3))
+	
+	def divideByNumber(self, app, number):
+		# dalīšana
+		if app.game.current_number % number != 0:
+			msgbox.showwarning("Nepareiza dalīšana", "Dalot ar šo skaitli neveidojās vesels skaitlis, izvēlieties otru!")
+			return
+		app.game.divideByNumber(number)
+		self.refresh(app)
+
+	def createPointsLabel(self, parent, var, font, row, column, padx, pady):
+		# uztaisa punktu tekstiņus īsākā veidā
+		newLabel = ttk.Label(parent, textvariable=var, font=font)
+		newLabel.grid(row=row, column=column, padx=padx, pady=pady)
+	
+	def createFormattedButton(self, parent, operator, resultVar, command=None):
+		# uztaisa formatētu dalīšanas pogu (ar frame)
+		buttonFrame = tk.Frame(parent, relief="raised", bd=2, cursor="hand2")
+		
+		operatorLabel = ttk.Label(buttonFrame, text=operator, font=("Arial", 16, "bold"))
+		operatorLabel.pack(pady=5)
+		
+		resultLabel = ttk.Label(buttonFrame, textvariable=resultVar, font=("Arial", 12))
+		resultLabel.pack(pady=5, padx=10)
+		
+		if command:
+			buttonFrame.bind("<Button-1>", lambda e: command())
+			operatorLabel.bind("<Button-1>", lambda e: command())
+			resultLabel.bind("<Button-1>", lambda e: command())
+		
+		return buttonFrame
+	
+	def createResultLabel(self, app, divider):
+		cur = app.game.current_number
+		result = int(app.game.current_number / divider)
+		if cur % divider != 0:
+			return "Nedalās!"
+		else:
+			return "= " + str(int(result))
