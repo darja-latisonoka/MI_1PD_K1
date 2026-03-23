@@ -1,13 +1,13 @@
 ﻿import random
 import time
 
-from models.Virsotne import Virsotne
-from models.Speles_koks import Speles_koks
+from models.node import Virsotne
+from models.game_tree import Speles_koks
 
-from Koks import uzgeneret_koku_no_virsotnes
-from Minimaksa import izveleties_labako_gajienu as minimax_move, noteikt_dalitaju
-from AlfaBeta import izveleties_labako_gajienu as alphabeta_move
-from Heuristika import nav_gajienu
+from logic.tree_builder import uzgeneret_koku_no_virsotnes
+from logic.minimax import izveleties_labako_gajienu as minimax_move, noteikt_dalitaju
+from logic.alpha_beta import izveleties_labako_gajienu as alphabeta_move
+from logic.heuristic import nav_gajienu
 
 
 def parbuvet_koku_no_current(current):
