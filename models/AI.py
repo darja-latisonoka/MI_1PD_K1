@@ -5,6 +5,7 @@ from logic.tree_builder import uzgeneret_koku_no_virsotnes
 from logic.minimax import izveleties_labako_gajienu as minimax_move, noteikt_dalitaju
 from logic.alpha_beta import izveleties_labako_gajienu as alphabeta_move
 from logic.heuristic import nav_gajienu
+from logic.Metrics import make_ai_move_with_metrics
 
 class AI:
     def __init__(self, gameState):
@@ -25,9 +26,19 @@ class AI:
         self.tree, self.node_dict = self.rebuild_tree_from_current_node(self.current_node)
 
         if self.game.algorithm == "alfa-beta":
-            move, value = alphabeta_move(self.current_node, self.tree, self.node_dict)
+            move, value = make_ai_move_with_metrics(
+                alphabeta_move, 
+                self.current_node, 
+                self.tree, 
+                self.node_dict
+            )
         else:
-            move, value = minimax_move(self.current_node, self.tree, self.node_dict)
+            move, value = make_ai_move_with_metrics(
+                minimax_move, 
+                self.current_node, 
+                self.tree, 
+                self.node_dict
+            )
         
         print(move, "separator", value)
 
