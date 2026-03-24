@@ -1,8 +1,9 @@
 ﻿from logic.minimax import iegut_bernus
 from logic.heuristic import heuristika, ir_beigas
-
+from logic import Metrics
 
 def alphabeta(virsotne, sp, virsotnes_dict, alpha, beta):
+Metrics.evaluated_nodes += 1
 
     if ir_beigas(virsotne):
         return heuristika(virsotne)
