@@ -10,6 +10,9 @@ class GamePage(tk.Frame):
 		self.playerScore = tk.StringVar()
 		self.bankScore = tk.StringVar()
 		self.aiScore = tk.StringVar()
+		self.currentTurn = tk.StringVar()
+
+		self.aiThinking = False
 
 		# punktu rāmis ar virsrakstu
 		pointsFrame = tk.Frame(self, bd=0, highlightthickness=1, highlightbackground="gray")
@@ -35,9 +38,13 @@ class GamePage(tk.Frame):
 		)
 		currentNumberLabel.pack(padx=50, pady=20)
 
+		# šobrīdējā gājiena attēlojums
+		turnLabel = ttk.Label(self, textvariable=self.currentTurn, font=("Arial", 12))
+		turnLabel.place(relx=0.5, rely=0.43, anchor="center")
+
 		# rāmis priekš dalīšanas pogām
 		buttonFrame = tk.Frame(self, bd=0)
-		buttonFrame.place(relx=0.5, rely=0.5, anchor="center")
+		buttonFrame.place(relx=0.5, rely=0.52, anchor="center")
 
 		# pogas ar kurām dala
 		self.divideBy2Result = tk.StringVar()
@@ -67,10 +74,17 @@ class GamePage(tk.Frame):
 		# updeito visus mainīgos, paņemot info no gamestate
 		self.currentNumber.set(app.game.current_number)
 
+		# punkti
 		self.playerScore.set("Spēlētājs: " + str(app.game.player_score))
 		self.bankScore.set("Banka: " + str(app.game.bank_score))
 		self.aiScore.set("Dators: " + str(app.game.ai_score))
 
+		# gājiens
+		if app.game.turn == "player":
+			self.currentTurn.set("Cilvēka gājiens")
+		else: self.runTheAI(app)
+
+		# dalījuma rezultāts
 		self.divideBy2Result.set(self.createResultLabel(app, 2))
 		self.divideBy3Result.set(self.createResultLabel(app, 3))
 	
@@ -81,6 +95,21 @@ class GamePage(tk.Frame):
 			return
 		app.game.divideByNumber(number)
 		self.refresh(app)
+
+	def runTheAI(self, app):
+		# domāšanas animācija priekš AI
+		self.aiThinking = True
+		self.currentTurn.set("Dators domā")
+		self.after(750, lambda: self.currentTurn.set("Dators domā."))
+		self.after(1500, lambda: self.currentTurn.set("Dators domā.."))
+		self.after(2250, lambda: self.currentTurn.set("Dators domā..."))
+		self.after(3000, lambda: self.finishAITurn(app))
+
+	def finishAITurn(self, app):
+		app.game.runTheAI()
+		self.aiThinking = False
+		self.refresh(app)
+
 
 	def createPointsLabel(self, parent, var, font, row, column, padx, pady):
 		# uztaisa punktu tekstiņus īsākā veidā
