@@ -22,7 +22,7 @@ class MainMenuPage(tk.Frame):
 		title_label.place(relx=0.41, rely=0.2, anchor="center")
 		
 		# play poga
-		startBtn = ttk.Button(self, text='PLAY', command=lambda: app.start_new_round())
+		startBtn = ttk.Button(self, text='PLAY (NEW GAME)', command=lambda: app.start_new_round())
 		startBtn.place(relx=0.5, rely=0.5, anchor="center")
 
 		# info poga

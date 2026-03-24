@@ -65,8 +65,8 @@ class GamePage(tk.Frame):
 		)
 		divideBy3button.grid(row=0, column=1, padx=40)
 
-		# iziešanas poga
-		backBtn = ttk.Button(self, text="BACK (to main menu)", command=lambda: app.show_page("MainMenuPage"))
+		# beigšanas poga
+		backBtn = ttk.Button(self, text="END GAME", command=lambda: app.show_page("MainMenuPage"))
 		backBtn.place(relx=0.5, rely=0.9, anchor="center")
 	
 	
