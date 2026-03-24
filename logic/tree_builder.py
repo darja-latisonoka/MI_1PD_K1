@@ -1,9 +1,9 @@
 import random
-from models.Virsotne import Virsotne
-from models.Speles_koks import Speles_koks
+from models.node import Virsotne
+from models.game_tree import Speles_koks
 
 
-MAX_LIMENIS = 5
+MAX_LIMENIS = 6
 
 def gajiena_parbaude(gajiena_tips, generetas_virsotnes, pasreizeja_virsotne, sp): # gajiena_tips: '2' vai '3' (dalītājs)
     # ja 2 vai 3 spēle beidzas
@@ -80,7 +80,7 @@ def gajiena_parbaude(gajiena_tips, generetas_virsotnes, pasreizeja_virsotne, sp)
     # Pārbaude vai tāda virsotne jau eksistē
     parbaude = False
     i = 0
-    while (not parbaude) and (i <= len(sp.virsotnu_kopa)-1):
+    while (not parbaude) and (i < len(sp.virsotnu_kopa)):
         v = sp.virsotnu_kopa[i]
         if (
             v.skaitlis == jauna_virsotne.skaitlis and
