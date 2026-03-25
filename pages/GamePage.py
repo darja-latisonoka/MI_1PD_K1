@@ -68,6 +68,13 @@ class GamePage(tk.Frame):
 			self.showEndResults()
 			return
 
+		# iztīram beigu rāmi (priekš nākamās spēles)
+		self.clearFrame(self.gameEndFrame)
+		self.gameEndFrame.configure(
+			bd=0,
+			highlightthickness=0
+		)
+
 		# setapo spaidāmās pogas
 		if app.game.turn == "cilvēks":
 			self.setupInteractionFrame(forHuman=True)
