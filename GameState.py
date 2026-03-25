@@ -59,8 +59,8 @@ class GameState:
     def select_number(self, number):
         self.selected_number = number
 
-    total_nodes = count_total_tree_nodes(number)
-        print(f"Pilns koka virsotņu skaits skaitlim {number}: {total_nodes}")
+    def choose_number(self, number):
+        self.current_number = number
     
     def switch_algorithm(self):
         self.algorithm = "minimax" if self.algorithm == "alfa-beta" else "alfa-beta"
