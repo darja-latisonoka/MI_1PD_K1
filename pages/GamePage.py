@@ -66,7 +66,7 @@ class GamePage(tk.Frame):
 		divideBy3button.grid(row=0, column=1, padx=40)
 
 		# beigšanas poga
-		backBtn = ttk.Button(self, text="END GAME", command=lambda: app.show_page("MainMenuPage"))
+		backBtn = ttk.Button(self, text="BEIGT SPĒLI", command=lambda: app.show_page("MainMenuPage"))
 		backBtn.place(relx=0.5, rely=0.9, anchor="center")
 	
 	
@@ -80,7 +80,7 @@ class GamePage(tk.Frame):
 		self.aiScore.set("Dators: " + str(app.game.ai_score))
 
 		# gājiens
-		if app.game.turn == "player":
+		if app.game.turn == "cilvēks":
 			self.currentTurn.set("Cilvēka gājiens")
 		else: self.runTheAI(app)
 
@@ -110,14 +110,13 @@ class GamePage(tk.Frame):
 		self.aiThinking = False
 		self.refresh(app)
 
-
+	# uztaisa punktu tekstiņus īsākā veidā
 	def createPointsLabel(self, parent, var, font, row, column, padx, pady):
-		# uztaisa punktu tekstiņus īsākā veidā
 		newLabel = ttk.Label(parent, textvariable=var, font=font)
 		newLabel.grid(row=row, column=column, padx=padx, pady=pady)
 	
+	# uztaisa formatētu dalīšanas pogu (ar frame)
 	def createFormattedButton(self, parent, operator, resultVar, command=None):
-		# uztaisa formatētu dalīšanas pogu (ar frame)
 		buttonFrame = tk.Frame(parent, relief="raised", bd=2, cursor="hand2")
 		
 		operatorLabel = ttk.Label(buttonFrame, text=operator, font=("Arial", 16, "bold"))
@@ -133,6 +132,7 @@ class GamePage(tk.Frame):
 		
 		return buttonFrame
 	
+	# parāda dalījuma rezultātu uz pogas
 	def createResultLabel(self, app, divider):
 		cur = app.game.current_number
 		result = int(app.game.current_number / divider)

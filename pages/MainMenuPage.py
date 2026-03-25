@@ -22,7 +22,7 @@ class MainMenuPage(tk.Frame):
 		title_label.place(relx=0.41, rely=0.2, anchor="center")
 		
 		# play poga
-		startBtn = ttk.Button(self, text='PLAY (NEW GAME)', command=lambda: app.start_new_round())
+		startBtn = ttk.Button(self, text='JAUNA SPĒLE', command=lambda: app.start_new_round())
 		startBtn.place(relx=0.5, rely=0.5, anchor="center")
 
 		# info poga
@@ -30,32 +30,30 @@ class MainMenuPage(tk.Frame):
 		infoBtn.place(relx=0.5, rely=0.6, anchor="center")
 
 		# exit poga
-		close_button = ttk.Button(self, text='EXIT', command=app.destroy)
+		close_button = ttk.Button(self, text='IZIET', command=app.destroy)
 		close_button.place(relx=0.5, rely=0.9, anchor="center")
 
 		# sākuma gājiena izvēle
 		turnChoiceFrame = ttk.Frame(self, borderwidth=5, relief="raised")
 		turnChoiceFrame.pack(side="bottom", anchor="sw", padx=20, pady=20)
 		self.turnLabelText = tk.StringVar()
-		self.turnLabelText.set("Starting turn: " + app.game.turn)
 		turnLabel = ttk.Label(turnChoiceFrame, textvariable=self.turnLabelText)
 		turnLabel.pack(padx=10, pady=10, anchor="w")
-		turnSwitchBtn = ttk.Button(turnChoiceFrame, text="Switch!", command=lambda:self.switch_starting_turn(app))
-		turnSwitchBtn.pack(padx=40, pady=10)
+		turnSwitchBtn = ttk.Button(turnChoiceFrame, text="Mainīt!", command=lambda:self.switch_starting_turn(app))
+		turnSwitchBtn.pack(padx=30, pady=10)
 
 		# algoritma izvēle
 		algoChoiceFrame = ttk.Frame(self, borderwidth=5, relief="raised")
 		algoChoiceFrame.place(relx=1.0, rely=1.0, anchor="se", x=-20, y=-20)
 		self.algoLabelText = tk.StringVar()
-		self.algoLabelText.set("Selected algorithm: " + app.game.algorithm)
 		algoLabel = ttk.Label(algoChoiceFrame, textvariable=self.algoLabelText)
 		algoLabel.pack(padx=10, pady=10, anchor="w")
-		algoSwitchBtn = ttk.Button(algoChoiceFrame, text="Switch!", command=lambda:self.switch_algorithm(app))
+		algoSwitchBtn = ttk.Button(algoChoiceFrame, text="Mainīt!", command=lambda:self.switch_algorithm(app))
 		algoSwitchBtn.pack(padx=65, pady=10)
 
 	def refresh(self, app):
-		self.turnLabelText.set("Starting turn: " + app.game.turn)
-		self.algoLabelText.set("Selected algorithm: " + app.game.algorithm)
+		self.turnLabelText.set("Spēli sāk: " + app.game.turn)
+		self.algoLabelText.set("Izvēlētais algoritms: " + app.game.algorithm)
 		
 	def switch_starting_turn(self, app):
 		app.game.switch_turn()

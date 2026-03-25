@@ -1,7 +1,3 @@
-from logic.TreeAnalyzer import count_total_tree_nodes
-import math
-import random
-
 from models.AI import AI
 import logic.utilities as util
 
@@ -17,7 +13,7 @@ class GameState:
     bank_score: int = 0
 
     algorithm: str = "alfa-beta" # vai nu "alfa-beta", vai "minimax"
-    turn: str = "player" # "player" vai "ai"
+    turn: str = "cilvēks" # "cilvēks" vai "ai"
     game_has_ended: bool = False
 
     ai = None
@@ -66,4 +62,4 @@ class GameState:
         self.algorithm = "minimax" if self.algorithm == "alfa-beta" else "alfa-beta"
     
     def switch_turn(self):
-        self.turn = "ai" if self.turn == "player" else "player"
+        self.turn = "ai" if self.turn == "cilvēks" else "cilvēks"

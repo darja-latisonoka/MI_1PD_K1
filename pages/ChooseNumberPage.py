@@ -8,7 +8,7 @@ class ChooseNumberPage(tk.Frame):
 	def __init__(self, parent, app):
 		super().__init__(parent)
 
-		textLabel = ttk.Label(self, text="CHOOSE A NUMBER TO START WITH")
+		textLabel = ttk.Label(self, text="IZVĒLIES SKAITLI AR KURU SĀKT", font=("Arial", 20))
 		textLabel.place(relx=0.5, rely=0.1, anchor="center")
 
 		self.buttonFrame = tk.Frame(self, bd=5, relief="raised")
@@ -28,10 +28,10 @@ class ChooseNumberPage(tk.Frame):
 		numbersLabel = ttk.Label(self, textvariable=self.numbersLabelText)
 		numbersLabel.place(relx=0.5, rely=0.4, anchor="center")
 
-		chooseBtn = ttk.Button(self, text="CHOOSE NUMBER", command=lambda: self.choose_number(app))
+		chooseBtn = ttk.Button(self, text="IZVĒLĒTIES (SĀKT SPĒLI)", command=lambda: self.choose_number(app))
 		chooseBtn.place(relx=0.5, rely=0.5, anchor="center")
 
-		backBtn = ttk.Button(self, text="BACK", command=lambda: app.show_page("MainMenuPage"))
+		backBtn = ttk.Button(self, text="ATPAKAĻ", command=lambda: app.show_page("MainMenuPage"))
 		backBtn.place(relx=0.5, rely=0.9, anchor="center")
 	
 	def refresh(self, app):
@@ -41,9 +41,9 @@ class ChooseNumberPage(tk.Frame):
 
 		# atjaunot šobrīdējā izvēlētā skaitļa label
 		if app.game.selected_number == 0:
-			self.numbersLabelText.set(f"Currently selected number: NONE")
+			self.numbersLabelText.set(f"Šobrīd izvēlētais skaitlis: NONE")
 		else:
-			self.numbersLabelText.set(f"Currently selected number: {app.game.selected_number}")
+			self.numbersLabelText.set(f"Šobrīd izvēlētais skaitlis: {app.game.selected_number}")
 
 	def select_number(self, app, number):
 		app.game.select_number(number)
@@ -52,7 +52,7 @@ class ChooseNumberPage(tk.Frame):
 	def choose_number(self, app):
 		n = app.game.selected_number
 		if n == 0:
-			msgbox.showwarning("No number selected", "You must select a number before continuing!")
+			msgbox.showwarning("Nav izvēlēts skaitlis", "Tev jāizvēlās kāds skaitlis, lai sāktu spēli!")
 			return
 		else:
 			app.game.choose_number(app.game.selected_number)
