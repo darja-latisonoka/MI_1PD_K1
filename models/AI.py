@@ -1,7 +1,7 @@
 from models.node import Virsotne
 from models.game_tree import Speles_koks
 
-from logic.tree_builder import uzgeneret_koku_no_virsotnes
+import logic.tree_builder as tbuilder
 from logic.minimax import izveleties_labako_gajienu as minimax_move, noteikt_dalitaju
 from logic.alpha_beta import izveleties_labako_gajienu as alphabeta_move
 from logic.heuristic import nav_gajienu
@@ -22,21 +22,18 @@ class AI:
             limenis=1,
             gajiens=self.game.turn
         )
-        self.tree, self.node_dict = self.rebuild_tree_from_current_node(self.current_node)
+        self.tree, self.node_dict = tbuilder.rebuild_tree_from_current_node(self.current_node)
 
         if self.game.algorithm == "alfa-beta":
             move, value = alphabeta_move(self.current_node, self.tree, self.node_dict)
         else:
             move, value = minimax_move(self.current_node, self.tree, self.node_dict)
         
-        print(move, "separator", value)
+        self.alterGameState(move)
 
+    def alterGameState(self, move):
+        self.game.current_number = move.skaitlis
+        self.game.player_score = move.p1
+        self.game.ai_score = move.p2
+        self.game.bank_score = move.banka
         self.game.switch_turn()
-
-    def rebuild_tree_from_current_node(self, current_node):
-        sp = Speles_koks()
-
-        uzgeneret_koku_no_virsotnes(sp, current_node)
-        virsotnes_dict = {v.id: v for v in sp.virsotnu_kopa}
-
-        return sp, virsotnes_dict

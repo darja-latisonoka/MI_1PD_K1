@@ -12,7 +12,9 @@ from logic.tree_builder import uzgeneret_koku_no_virsotnes
 from logic.minimax import izveleties_labako_gajienu as minimax_move, noteikt_dalitaju
 from logic.alpha_beta import izveleties_labako_gajienu as alphabeta_move
 from logic.heuristic import nav_gajienu
+import logic.utilities as util
 
+NUMBERCOUNT = 5
 
 def parbuvet_koku_no_current(current):
     sp = Speles_koks()
@@ -44,11 +46,7 @@ def main():
     while first not in ["1", "2"]:
         first = input("Nepareiza izvēle. Ievadi 1 vai 2: ").strip()
 
-    skaitli = []
-    while len(skaitli) < 5:
-        x = random.randint(1000000, 5000000)
-        if x % 216 == 0:
-            skaitli.append(x)
+    skaitli = util.generateRandomNumbers(NUMBERCOUNT)
 
     print("Sākuma skaitlis:", skaitli[0])
 

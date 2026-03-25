@@ -126,3 +126,11 @@ def uzgeneret_koku_no_virsotnes(sp, sakuma_virsotne):
         gajiena_parbaude('3', generetas_virsotnes, pasreizeja_virsotne, sp)
 
         generetas_virsotnes.pop(0)
+    
+def rebuild_tree_from_current_node(current_node):
+    sp = Speles_koks()
+
+    uzgeneret_koku_no_virsotnes(sp, current_node)
+    virsotnes_dict = {v.id: v for v in sp.virsotnu_kopa}
+
+    return sp, virsotnes_dict

@@ -69,7 +69,7 @@ def izveleties_labako_gajienu(sakuma_virsotne, sp, virsotnes_dict):
             float('inf')
         )
 
-        print(f"Gājiens uz {berns.skaitlis} -> vērtība {vertiba}")
+        # print(f"Gājiens uz {berns.skaitlis} -> vērtība {vertiba}")
 
         if vertiba > labaka_vertiba:
             labaka_vertiba = vertiba
