@@ -24,33 +24,43 @@ class GameState:
         self.current_number = 0
         self.player_score = 0
         self.ai_score = 0
+        self.bank_score = 0
         self.game_has_ended = False
         self.ai = AI(self)
     
     def divideByNumber(self, number):
-        self.current_number = int(self.current_number / number)
+        self.current_number = self.current_number // number
 
         if self.current_number % 2 != 0 and self.current_number % 3 != 0:
             self.game_has_ended = True
 
         # punktu pieskaitīšana (vai atņemšana)
-        if self.current_number % 2 == 0:
-            self.player_score += 1
+        if self.turn == "cilvēks":
+            if self.current_number % 2 == 0:
+                self.player_score += 1
+            else:
+                self.player_score -= 1
         else:
-            self.player_score -= 1
+            if self.current_number % 2 == 0:
+                self.ai_score += 1
+            else:
+                self.ai_score -= 1
+
         if self.current_number % 5 == 0:
             self.bank_score += 1
-        self.switch_turn()
 
         # bankas punktu pārlikšana, spēles beigās
         if self.game_has_ended:
-            if self.turn == "player":
+            if self.turn == "cilvēks":
                 self.player_score += self.bank_score
             else:
                 self.ai_score += self.bank_score
+            return
+
+        self.switch_turn()
 
     def runTheAI(self):
-       self.ai.runTheAI()
+       return self.ai.runTheAI()
 
     def select_number(self, number):
         self.selected_number = number

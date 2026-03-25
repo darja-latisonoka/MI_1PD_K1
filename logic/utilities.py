@@ -10,3 +10,6 @@ def generateRandomNumbers(count):
         x = random.randint(lowerLimit, upperLimit)
         skaitli.append(216 * x)
     return sorted(skaitli)
+
+def numberCantBeDivided(num):
+    return num % 2 != 0 and num % 3 != 0

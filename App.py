@@ -65,6 +65,7 @@ class App(tk.Tk):
 	def show_page(self, page_name):
 		page = self.pages[page_name]
 		page.tkraise()
+		
 
 		# ja ir refresh funkcija, tad updeito
 		if hasattr(page, "refresh") and callable(page.refresh):

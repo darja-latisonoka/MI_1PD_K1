@@ -2,9 +2,9 @@ from models.node import Virsotne
 from models.game_tree import Speles_koks
 
 import logic.tree_builder as tbuilder
-from logic.minimax import izveleties_labako_gajienu as minimax_move, noteikt_dalitaju
+import logic.utilities as util
+from logic.minimax import izveleties_labako_gajienu as minimax_move
 from logic.alpha_beta import izveleties_labako_gajienu as alphabeta_move
-from logic.heuristic import nav_gajienu
 from logic.Metrics import make_ai_move_with_metrics
 
 class AI:
@@ -39,12 +39,18 @@ class AI:
                 self.tree, 
                 self.node_dict
             )
-        
+        divider = self.game.current_number // move.skaitlis
         self.alterGameState(move)
+        return divider
 
     def alterGameState(self, move):
         self.game.current_number = move.skaitlis
         self.game.player_score = move.p1
         self.game.ai_score = move.p2
         self.game.bank_score = move.banka
+
+        # ja AI pabeidz spēli
+        if util.numberCantBeDivided(self.game.current_number):
+            self.game.game_has_ended = True
+
         self.game.switch_turn()
