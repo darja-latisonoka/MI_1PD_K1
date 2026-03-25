@@ -1,4 +1,5 @@
-﻿from logic.heuristic import heuristika, ir_beigas
+from logic import Metrics
+from logic.heuristic import heuristika, ir_beigas
 
 def iegut_bernus(virsotne, sp, virsotnes_dict):
     bernu_id = sp.loku_kopa.get(virsotne.id, [])
@@ -6,6 +7,8 @@ def iegut_bernus(virsotne, sp, virsotnes_dict):
 
 
 def minimax(virsotne, sp, virsotnes_dict):
+    Metrics.evaluated_nodes += 1
+    
     if ir_beigas(virsotne):
         return heuristika(virsotne)
 
