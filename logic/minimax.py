@@ -8,6 +8,7 @@ def iegut_bernus(virsotne, sp, virsotnes_dict):
 
 def minimax(virsotne, sp, virsotnes_dict):
     Metrics.evaluated_nodes += 1
+    Metrics.visited_nodes.add(virsotne.id) 
     
     if ir_beigas(virsotne):
         return heuristika(virsotne)

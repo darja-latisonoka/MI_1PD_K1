@@ -38,9 +38,9 @@ def heuristika(virsotne):
     # Ja dators var uzreiz iegūt 2, tas ir labi
     if var_sasniegt_2(virsotne.skaitlis):
         if virsotne.gajiens == 2:
-            vertiba += 2
+            vertiba += virsotne.banka
         else:
-            vertiba -= 2
+            vertiba -= virsotne.banka
 
     # Jo vairāk iespējamo gājienu, jo elastīgāka pozīcija
     gajienu_skaits = iespejamie_gajieni(virsotne.skaitlis)

@@ -1,4 +1,5 @@
 from models.AI import AI
+from logic import Metrics
 import logic.utilities as util
 
 NUMBERCOUNT = 5
@@ -51,6 +52,7 @@ class GameState:
 
         # bankas punktu pārlikšana, spēles beigās
         if self.game_has_ended:
+            Metrics.print_summary()
             if self.turn == "cilvēks":
                 self.player_score += self.bank_score
             else:

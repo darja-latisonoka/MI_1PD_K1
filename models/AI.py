@@ -6,6 +6,7 @@ import logic.utilities as util
 from logic.minimax import izveleties_labako_gajienu as minimax_move
 from logic.alpha_beta import izveleties_labako_gajienu as alphabeta_move
 from logic.Metrics import make_ai_move_with_metrics
+from logic import Metrics
 
 class AI:
     def __init__(self, gameState):
@@ -52,5 +53,6 @@ class AI:
         # ja AI pabeidz spēli
         if util.numberCantBeDivided(self.game.current_number):
             self.game.game_has_ended = True
+            Metrics.print_summary()
 
         self.game.switch_turn()

@@ -1,11 +1,12 @@
 import random
 from models.node import Virsotne
 from models.game_tree import Speles_koks
+from logic import Metrics
 
 
 MAX_LIMENIS = 6
 
-def gajiena_parbaude(gajiena_tips, generetas_virsotnes, pasreizeja_virsotne, sp): # gajiena_tips: '2' vai '3' (dalītājs)
+def gajiena_parbaude(gajiena_tips, generetas_virsotnes, pasreizeja_virsotne, sp): 
     # ja 2 vai 3 spēle beidzas
     if pasreizeja_virsotne.skaitlis == 2 or pasreizeja_virsotne.skaitlis == 3:
         return
@@ -98,6 +99,7 @@ def gajiena_parbaude(gajiena_tips, generetas_virsotnes, pasreizeja_virsotne, sp)
         sp.pievienot_virsotni(jauna_virsotne)
         generetas_virsotnes.append(jauna_virsotne)
         sp.pievienot_loku(pasreizeja_virsotne.id, id_new)
+        Metrics.total_nodes += 1
     else:
         j -= 1
         sp.pievienot_loku(pasreizeja_virsotne.id, sp.virsotnu_kopa[i].id)
@@ -128,9 +130,13 @@ def uzgeneret_koku_no_virsotnes(sp, sakuma_virsotne):
         generetas_virsotnes.pop(0)
     
 def rebuild_tree_from_current_node(current_node):
+    from logic import Metrics
+    Metrics.visited_nodes = set() 
+
     sp = Speles_koks()
 
     uzgeneret_koku_no_virsotnes(sp, current_node)
+    Metrics.total_nodes = len(sp.virsotnu_kopa)
     virsotnes_dict = {v.id: v for v in sp.virsotnu_kopa}
 
     return sp, virsotnes_dict

@@ -4,6 +4,7 @@ from logic import Metrics
 
 def alphabeta(virsotne, sp, virsotnes_dict, alpha, beta):
     Metrics.evaluated_nodes += 1
+    Metrics.visited_nodes.add(virsotne.id) 
 
     if ir_beigas(virsotne):
         return heuristika(virsotne)
