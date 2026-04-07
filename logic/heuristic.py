@@ -2,7 +2,7 @@
 
 # Pārbauda vai spēle ir beigusies
 def ir_beigas(virsotne):
-    return virsotne.skaitlis == 2 or virsotne.skaitlis == 3 or utils.numberCantBeDivided(virsotne)
+    return virsotne.skaitlis == 2 or virsotne.skaitlis == 3 or utils.numberCantBeDivided(virsotne.skaitlis)
 
 
 # Pārbauda vai no dotā skaitļa vienā gājienā var iegūt skaitli 2
