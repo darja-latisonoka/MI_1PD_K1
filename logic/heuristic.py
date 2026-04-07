@@ -1,11 +1,8 @@
-﻿# Pārbauda vai vairs nav iespējams izdarīt gājienu
-def nav_gajienu(virsotne):
-    return virsotne.skaitlis % 2 != 0 and virsotne.skaitlis % 3 != 0
-
+﻿import logic.utilities as utils
 
 # Pārbauda vai spēle ir beigusies
 def ir_beigas(virsotne):
-    return virsotne.skaitlis == 2 or virsotne.skaitlis == 3 or nav_gajienu(virsotne)
+    return virsotne.skaitlis == 2 or virsotne.skaitlis == 3 or utils.numberCantBeDivided(virsotne)
 
 
 # Pārbauda vai no dotā skaitļa vienā gājienā var iegūt skaitli 2
